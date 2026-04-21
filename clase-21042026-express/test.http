@@ -1,0 +1,28 @@
+###
+
+GET http://localhost:3000
+
+####
+
+GET http://localhost:3000/usuarios
+
+###
+
+POST http://localhost:3000
+
+Cuerpo datos
+
+####
+//Juego con compañero de lado con ip y puertos
+
+###
+
+GET http://192.169.0.115:3000
+
+###
+
+POST  http://192.169.0.115:3000
+
+###
+
+
