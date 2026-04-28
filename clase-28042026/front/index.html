@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRONT</title>
+</head>
+<body>
+    <h1>BUENARDASS</h1>
+    <script>
+        async function consultaAPI(){
+            const respuesta = await fetch('https://69f0c174c1533dbedc9db307.mockapi.io/api/v1/producto')
+            const productos = await respuesta.json()
+            productos.map((producto)=>{
+                console.log(`./recursos/imagenes/${producto.imagen}`)
+            })
+        }
+
+        consultaAPI()
+
+    </script>
+</body>
+</html>
