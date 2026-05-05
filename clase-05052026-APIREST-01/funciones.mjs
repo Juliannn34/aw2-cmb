@@ -40,6 +40,12 @@ function obtenerProductosDELETE(req, res){
     const productosFltrados = productos.filter((productos)=>{
         return Number(productos.id) !== id_producto
     })
+
+    //borramos el producto elegido 
+    productos.length = 0
+    productos.push(productosFltrados)
+
+
     //Verificamos si hay elementos en el arreglo
     const respuesta = {
         datos: productosFltrados,
