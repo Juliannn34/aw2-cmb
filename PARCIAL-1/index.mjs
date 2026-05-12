@@ -8,7 +8,7 @@ const PUERTO = 3000
 
 const app = express()
 
-app.use(express.json())//<-- avisa a express que apase los datos del cuerpo del mentaje http 
+app.use(express.json())//<-- avisa a express que apase los datos del cuerpo del mensaje http 
 
 
 //Definiendo una API REST

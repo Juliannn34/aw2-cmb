@@ -22,6 +22,8 @@ function obtenerLibrosID(req, res){
             status: 200
         }
 
+        // res.json convierte el objeto JavaScript a formato JSON
+        // y lo envía como respuesta al cliente
         return res.json(respuesta)
 
     } else {
@@ -41,19 +43,22 @@ function obtenerLibrosPorGenero(req, res){
 
     const genero = req.params.genero
 
-    // filter recorre el array libros y devuelve un NUEVO array
+    // "filter" recorre el array libros y devuelve un NUEVO array
     // solo con los libros cuyo genero coincida con el parametro recibido
     const librosFiltrados = libros.filter((libro) => {
         return libro.genero === genero
     })
 
-    // "reduce" recorre el array y acumula un valor
-    // empieza con acc = 0 (acc = acumulador) y en cada vuelta le suma el puntaje del libro actual
-    // al final acc tiene la suma total de todos los puntajes
-    // luego se divide por la cantidad de libros para obtener el promedio
-    const promedio = librosFiltrados.reduce((acc, libro) => {
-        return acc + libro.puntaje
-    }, 0) / librosFiltrados.length
+    // forEach recorre el array y acumula la suma de todos los puntajes
+    let sumaPuntajes = 0
+
+    librosFiltrados.forEach((libro) => {
+        sumaPuntajes = sumaPuntajes + libro.puntaje
+    })
+
+    // divide la suma total por la cantidad de libros para obtener el promedio
+    const promedio = sumaPuntajes / librosFiltrados.length
+
 
     if (librosFiltrados.length > 0) {
         const respuesta = {
@@ -65,9 +70,9 @@ function obtenerLibrosPorGenero(req, res){
             url: 'http://localhost:3000/filtrarPorGenero/' + genero,
             status: 200
         }
-        // res.json convierte el objeto JavaScript a formato JSON
-        // y lo envía como respuesta al cliente
+        
         return res.json(respuesta)
+
     } else {
         res.status(404).json({
             mensaje: 'No se encontraron libros con ese género',

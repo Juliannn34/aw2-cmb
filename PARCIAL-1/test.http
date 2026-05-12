@@ -1,0 +1,29 @@
+###
+
+//Ver todos los libros
+GET http://localhost:3000/api/v1/libros
+
+###
+
+//ver libros por id
+GET http://localhost:3000/api/v1/libros/5
+
+###
+
+//prueba poner id string y no numerico
+GET http://localhost:3000/api/v1/libros/asd
+
+###
+
+//prueba poner id inexistente
+GET http://localhost:3000/api/v1/libros/99
+
+###
+
+//prueba de endpoint por fuera de la API REST, para buscar por genero y calcular promedio
+GET http://localhost:3000/filtrarPorGenero/Realismo mágico
+
+###
+
+//prueba poner genero que no existe
+GET http://localhost:3000/filtrarPorGenero/Terror
