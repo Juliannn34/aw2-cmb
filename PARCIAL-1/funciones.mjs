@@ -1,4 +1,7 @@
-import libros from "./Libros.mjs";
+// se importa la función leerLibros()
+import { leerLibros } from './archivos.mjs'
+// llamamos a leerLibros() con await y el resultado es el array de libros 
+const libros = await leerLibros()
 
 // Devuelve todos los libros de la base de datos
 function obtenerLibros(req, res){
