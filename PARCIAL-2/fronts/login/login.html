@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Iniciar sesión - Biblioteca</title>
+        <link rel="stylesheet" href="/css/global.css" />
+    </head>
+    <body>
+        <div class="contenedor-login">
+            <form id="form-login">
+                <h2>Iniciar sesión</h2>
+
+                <label for="usuario">
+                    Usuario:
+                    <input type="text" id="usuario" name="usuario" required />
+                </label>
+
+                <label for="pass">
+                    Contraseña:
+                    <input type="password" id="pass" name="pass" required />
+                </label>
+
+                <button type="submit">Ingresar</button>
+
+                <!-- Acá se muestra el mensaje de error si las credenciales son incorrectas -->
+                <p class="mensaje-error" id="mensaje-error"></p>
+            </form>
+        </div>
+
+        <script>
+            // Capturamos el formulario y el elemento donde mostramos errores
+            const formLogin = document.getElementById('form-login')
+            const mensajeError = document.getElementById('mensaje-error')
+
+            formLogin.addEventListener('submit', function (event) {
+                // evitamos que el formulario recargue la página por defecto
+                event.preventDefault()
+
+                const usuario = document.getElementById('usuario').value
+                const pass = document.getElementById('pass').value
+
+                fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    // el servidor recibe { usuario, pass } y verifica contra la base de datos
+                    body: JSON.stringify({ usuario, pass })
+                })
+                    .then((respuesta) => {
+                        if (respuesta.ok) {
+                            // si el login fue exitoso, el servidor ya seteó la cookie
+                            // redirigimos a la página principal de items
+                            window.location.href = '/items.html'
+                        } else {
+                            // si las credenciales son incorrectas mostramos el mensaje
+                            mensajeError.textContent = 'Usuario o contraseña incorrectos'
+                        }
+                    })
+                    .catch((error) => {
+                        mensajeError.textContent = 'Error de conexión con el servidor'
+                        console.log(error)
+                    })
+            })
+        </script>
+    </body>
+</html>

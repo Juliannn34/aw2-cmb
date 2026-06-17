@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Detalle de libro - Biblioteca</title>
+        <link rel="stylesheet" href="/css/global.css" />
+    </head>
+    <body>
+        <nav>
+            <span class="titulo">📚 Biblioteca</span>
+            <a href="/items.html">Items</a>
+            <a href="/procedimiento.html">Procedimiento</a>
+            <a href="#" id="link-cerrar-sesion">Cerrar sesión</a>
+        </nav>
+
+        <main>
+            <h1>Detalle del libro</h1>
+
+            <!-- Acá se inserta dinámicamente la información del libro -->
+            <div class="detalle-libro" id="detalle-libro"></div>
+
+            <p><a href="/items.html">&larr; Volver al listado</a></p>
+        </main>
+
+        <script>
+            const detalleLibro = document.getElementById('detalle-libro')
+
+            // URLSearchParams permite leer los parámetros de la query string
+            // ejemplo: si la URL es /item.html?id=3, params.get('id') devuelve "3"
+            const params = new URLSearchParams(window.location.search)
+            const id = params.get('id')
+
+            if (!id) {
+                // si no se recibió ningún id en la URL, mostramos un mensaje
+                detalleLibro.innerHTML = '<p>No se especificó ningún libro.</p>'
+            } else {
+                // pedimos al backend el libro con ese id
+                fetch('/api/v1/libros/' + id)
+                    .then((respuesta) => {
+                        if (!respuesta.ok) {
+                            window.location.href = '/login.html'
+                            return
+                        }
+                        return respuesta.json()
+                    })
+                    .then((resultado) => {
+                        if (!resultado) return
+
+                        // resultado.datos es un array con un solo libro
+                        const libro = resultado.datos[0]
+
+                        if (!libro) {
+                            detalleLibro.innerHTML = '<p>Libro no encontrado.</p>'
+                            return
+                        }
+
+                        detalleLibro.innerHTML = `
+                            <h2>${libro.titulo}</h2>
+                            <p><strong>Autor:</strong> ${libro.autor}</p>
+                            <p><strong>Género:</strong> ${libro.genero}</p>
+                            <p><strong>Año de publicación:</strong> ${libro.anioPublicacion}</p>
+                            <p><strong>Puntaje:</strong> ${libro.puntaje}</p>
+                            <p><strong>Editorial:</strong> ${libro.editorial}</p>
+                        `
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            }
+
+            // Lógica del link de cerrar sesión
+            const linkCerrarSesion = document.getElementById('link-cerrar-sesion')
+            linkCerrarSesion.addEventListener('click', function (event) {
+                event.preventDefault()
+
+                fetch('/cerrar-sesion', { method: 'POST' })
+                    .then(() => {
+                        window.location.href = '/login.html'
+                    })
+                    .catch((error) => console.log(error))
+            })
+        </script>
+    </body>
+</html>

@@ -1,0 +1,152 @@
+body {
+    background: #f5f6fa;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    color: #2c2c2c;
+}
+
+/* Barra de navegación superior */
+nav {
+    background: #1ca13b;
+    padding: 1rem 2rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+nav .titulo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-right: auto;
+}
+
+main {
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Formulario de login */
+.contenedor-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+form {
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    min-width: 300px;
+}
+
+label {
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+}
+
+input[type='text'],
+input[type='password'] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 0.25rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+button {
+    background: #1ca13b;
+    color: #fff;
+    border: none;
+    padding: 0.7rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #21bb45;
+}
+
+.mensaje-error {
+    color: #c0392b;
+    font-weight: 500;
+    min-height: 1.2rem;
+}
+
+.mensaje-exito {
+    color: #1ca13b;
+    font-weight: 500;
+    min-height: 1.2rem;
+}
+
+/* Tarjetas de libros */
+.tarjeta-libro {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.tarjeta-libro h3 {
+    margin: 0 0 0.4rem 0;
+}
+
+.tarjeta-libro a {
+    color: #1ca13b;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.tarjeta-libro a:hover {
+    text-decoration: underline;
+}
+
+/* Detalle de un libro */
+.detalle-libro {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem 2rem;
+}
+
+.detalle-libro p {
+    margin: 0.4rem 0;
+}
+
+/* Sección de procedimiento */
+.caja-procedimiento {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem 2rem;
+}
+
+.caja-procedimiento p.explicacion {
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+#resultado-procedimiento {
+    margin-top: 1rem;
+}

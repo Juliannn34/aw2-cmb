@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Libros - Biblioteca</title>
+        <link rel="stylesheet" href="/css/global.css" />
+    </head>
+    <body>
+        <nav>
+            <span class="titulo">📚 Biblioteca</span>
+            <a href="/items.html">Items</a>
+            <a href="/procedimiento.html">Procedimiento</a>
+            <a href="#" id="link-cerrar-sesion">Cerrar sesión</a>
+        </nav>
+
+        <main>
+            <h1>Listado de libros</h1>
+
+            <!-- Acá se insertan dinámicamente las tarjetas de cada libro -->
+            <div id="contenedor-libros"></div>
+        </main>
+
+        <script>
+            const contenedorLibros = document.getElementById('contenedor-libros')
+
+            // Pedimos al backend todos los libros
+            fetch('/api/v1/libros')
+                .then((respuesta) => {
+                    // si la respuesta no es ok (por ejemplo 401 sin sesión)
+                    // redirigimos al login
+                    if (!respuesta.ok) {
+                        window.location.href = '/login.html'
+                        return
+                    }
+                    return respuesta.json()
+                })
+                .then((resultado) => {
+                    if (!resultado) return
+
+                    // resultado.datos es el array de libros que devuelve la API
+                    resultado.datos.forEach((libro) => {
+                        // creamos una tarjeta por cada libro
+                        const tarjeta = document.createElement('div')
+                        tarjeta.classList.add('tarjeta-libro')
+
+                        // el enlace usa query string para pasar el id a la página item.html
+                        // ejemplo: /item.html?id=3
+                        tarjeta.innerHTML = `
+                            <h3>${libro.titulo}</h3>
+                            <p>Autor: ${libro.autor}</p>
+                            <p>Género: ${libro.genero}</p>
+                            <a href="/item.html?id=${libro.id}">Ver detalle</a>
+                        `
+
+                        contenedorLibros.appendChild(tarjeta)
+                    })
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+
+            // Lógica del link de cerrar sesión
+            const linkCerrarSesion = document.getElementById('link-cerrar-sesion')
+            linkCerrarSesion.addEventListener('click', function (event) {
+                event.preventDefault()
+
+                fetch('/cerrar-sesion', { method: 'POST' })
+                    .then(() => {
+                        window.location.href = '/login.html'
+                    })
+                    .catch((error) => console.log(error))
+            })
+        </script>
+    </body>
+</html>

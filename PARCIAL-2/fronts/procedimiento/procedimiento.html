@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Procedimiento - Biblioteca</title>
+        <link rel="stylesheet" href="/css/global.css" />
+    </head>
+    <body>
+        <nav>
+            <span class="titulo">📚 Biblioteca</span>
+            <a href="/items.html">Items</a>
+            <a href="/procedimiento.html">Procedimiento</a>
+            <a href="#" id="link-cerrar-sesion">Cerrar sesión</a>
+        </nav>
+
+        <main>
+            <h1>Procedimiento: filtrar por género</h1>
+
+            <div class="caja-procedimiento">
+                <p class="explicacion">
+                    Este procedimiento toma todos los libros del género indicado,
+                    calcula cuántos libros hay y el promedio de puntaje entre ellos.
+                    A diferencia de los endpoints anteriores, esta ruta no representa
+                    un recurso sino que ejecuta un proceso sobre los datos, por lo que
+                    no sigue los principios de una API REST.
+                </p>
+
+                <label for="genero">
+                    Género a consultar:
+                    <input type="text" id="genero" placeholder="Ejemplo: Novela" />
+                </label>
+
+                <button id="boton-ejecutar">Ejecutar procedimiento</button>
+
+                <!-- Acá se muestra el resultado del procedimiento -->
+                <div id="resultado-procedimiento"></div>
+            </div>
+        </main>
+
+        <script>
+            const botonEjecutar = document.getElementById('boton-ejecutar')
+            const inputGenero = document.getElementById('genero')
+            const resultadoProcedimiento = document.getElementById('resultado-procedimiento')
+
+            botonEjecutar.addEventListener('click', function () {
+                const genero = inputGenero.value.trim()
+
+                if (!genero) {
+                    resultadoProcedimiento.innerHTML = '<p class="mensaje-error">Ingresá un género para buscar.</p>'
+                    return
+                }
+
+                // encodeURIComponent convierte espacios y tildes a un formato seguro para la URL
+                fetch('/filtrarPorGenero/' + encodeURIComponent(genero))
+                    .then((respuesta) => {
+                        if (respuesta.status === 401) {
+                            window.location.href = '/login.html'
+                            return
+                        }
+                        return respuesta.json().then((datos) => {
+                            return { ok: respuesta.ok, datos }
+                        })
+                    })
+                    .then((resultado) => {
+                        if (!resultado) return
+
+                        const { ok, datos } = resultado
+
+                        if (ok) {
+                            // el procedimiento se ejecutó con éxito
+                            let html = `<p class="mensaje-exito">Procedimiento ejecutado correctamente</p>`
+                            html += `<p><strong>Cantidad de libros:</strong> ${datos.cantidadLibros}</p>`
+                            html += `<p><strong>Promedio de puntaje:</strong> ${datos.promedioPuntaje}</p>`
+                            html += '<ul>'
+                            datos.datos.forEach((libro) => {
+                                html += `<li>${libro.titulo} — puntaje: ${libro.puntaje}</li>`
+                            })
+                            html += '</ul>'
+                            resultadoProcedimiento.innerHTML = html
+                        } else {
+                            // el procedimiento no encontró libros para ese género
+                            resultadoProcedimiento.innerHTML =
+                                `<p class="mensaje-error">${datos.mensaje}</p>`
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        resultadoProcedimiento.innerHTML =
+                            '<p class="mensaje-error">Error de conexión con el servidor</p>'
+                    })
+            })
+
+            // Lógica del link de cerrar sesión
+            const linkCerrarSesion = document.getElementById('link-cerrar-sesion')
+            linkCerrarSesion.addEventListener('click', function (event) {
+                event.preventDefault()
+
+                fetch('/cerrar-sesion', { method: 'POST' })
+                    .then(() => {
+                        window.location.href = '/login.html'
+                    })
+                    .catch((error) => console.log(error))
+            })
+        </script>
+    </body>
+</html>
